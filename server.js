@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import userRoutes from "./server/routes/userRoutes.js"
 import path from "path";
 
 // Get current file's directory
@@ -24,6 +25,8 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ msg: "GET request working" });
 });
+
+app.use("/users", userRoutes);
 
 // Import and mount posts routes
 try {
