@@ -33,6 +33,14 @@ try {
   console.error("[ERROR] Failed to import posts routes:", error);
 }
 
+// Import and mount community routes
+try {
+  const communityRoutes = await import("./server/routes/community.js");
+  app.use("/communities", communityRoutes.default);
+} catch (error) {
+  console.error("[ERROR] Failed to import community routes:", error);
+}
+
 // 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
