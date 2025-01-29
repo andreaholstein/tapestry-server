@@ -1,7 +1,7 @@
 {
-  "name": "server",
+  "name": "tapestry",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -22,9 +22,11 @@
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "knex": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.12.0",
     "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1",
     "uuid": "^11.0.5"
   }
 }
