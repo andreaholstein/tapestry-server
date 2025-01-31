@@ -1,10 +1,14 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import userRoutes from "./server/routes/userRoutes.js"
+import userRoutes from "./server/routes/userRoutes.js";
+import userCommunitiesRoutes from "./server/routes/user_communities.js";
+import communityRoutes from "./server/routes/community.js";
 import path from "path";
 const { Server } = require("socket.io");
 
@@ -17,7 +21,7 @@ const server = http.createServer(app);
 // Initialize Socket.io and attach it to the HTTP server
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow connections from any origin (for development; pdate for production)
+    origin: "*", // Allow connections from any origin (for development; update for production)
   },
 });
 
@@ -40,23 +44,10 @@ app.get("/", (req, res) => {
   res.json({ msg: "GET request working" });
 });
 
+// Route Imports
 app.use("/users", userRoutes);
-
-// Import and mount posts routes
-try {
-  const postsRoutes = await import("./server/routes/posts.js");
-  app.use("/posts", postsRoutes.default);
-} catch (error) {
-  console.error("[ERROR] Failed to import posts routes:", error);
-}
-
-// Import and mount community routes
-try {
-  const communityRoutes = await import("./server/routes/community.js");
-  app.use("/communities", communityRoutes.default);
-} catch (error) {
-  console.error("[ERROR] Failed to import community routes:", error);
-}
+app.use("/user-communities", userCommunitiesRoutes);
+app.use("/communities", communityRoutes);
 
 // 404 handler
 app.use((req, res) => {
