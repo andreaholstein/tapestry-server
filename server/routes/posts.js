@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
         "users.username",
         "users.profile_picture"
       )
-      .join("users", "posts.user_id", "=", "users.id"); //
+      .join("users", "posts.user_id", "=", "users.id"); 
 
     if (community_id) {
       postsQuery = postsQuery.where("posts.community_id", community_id);
@@ -41,7 +41,6 @@ router.post("/", async (req, res) => {
   try {
     const { post_text, post_media, user_id, community_id } = req.body;
 
-    // Validate required fields
     if (!post_text || !user_id) {
       return res.status(400).json({
         error: "Missing required fields",
@@ -49,7 +48,6 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // Create new post object with UUID
     const newPost = {
       id: uuidv4(),
       post_text,
