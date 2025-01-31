@@ -9,6 +9,7 @@ import { dirname } from "path";
 import userRoutes from "./server/routes/userRoutes.js";
 import userCommunitiesRoutes from "./server/routes/user_communities.js";
 import communityRoutes from "./server/routes/community.js";
+import postsRoutes from "./server/routes/posts.js"; // ✅ Import posts.js
 import path from "path";
 const { Server } = require("socket.io");
 
@@ -44,7 +45,9 @@ app.get("/", (req, res) => {
   res.json({ msg: "GET request working" });
 });
 
-// Route Imports
+// ✅ Add missing posts route
+app.use("/posts", postsRoutes);
+
 app.use("/users", userRoutes);
 app.use("/user-communities", userCommunitiesRoutes);
 app.use("/communities", communityRoutes);
