@@ -25,5 +25,12 @@ export async function seed(knex) {
       photo: "life_update_photo_url",
       alt_text: "A person updating their blog",
     },
+    {
+      id: uuidv4(),
+      title: "Web Developers",
+      topic: "A community for web dev enthusiasts",
+      photo: "https://example.com/webdev.jpg",
+      alt_text: "a photo of a laptop with code on it",
+    },
   ]);
 }

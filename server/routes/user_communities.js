@@ -14,20 +14,9 @@ router.get("/", authorize, async (req, res) => {
 
     // Fetch communities for the authenticated user
     const userCommunities = await knex("user_communities")
-      .select(
-        "user_communities.user_id",
-        "user_communities.community_id",
-        "users.username",
-        "communities.title"
-      )
-      .join("users", "user_communities.user_id", "=", "users.id")
-      .join(
-        "communities",
-        "user_communities.community_id",
-        "=",
-        "communities.id"
-      )
-      .where("user_communities.user_id", userId); // Filter by user ID
+    .where("user_communities.user_id", userId)
+    .join("communities", "user_communities.community_id", "communities.id")
+    .select("communities.id", "communities.title");
 
     if (userCommunities.length === 0) {
       return res

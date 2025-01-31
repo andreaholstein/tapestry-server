@@ -9,7 +9,7 @@ const SALT_ROUNDS = 8;
 
 const getUser = async (req, res) => {
   try {
-    const user = await knex("users").where({ id: req.token.id }).first();
+    const user = await knex("users").where({ id: req.user_id }).first();
 
     res.json(user);
   } catch (error) {

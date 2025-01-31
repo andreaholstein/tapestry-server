@@ -6,23 +6,24 @@ import { v4 as uuidv4 } from "uuid";
  */
 export function up(knex) {
   return knex.schema.createTable("user_communities", (table) => {
-    table.uuid("id").primary().defaultTo(knex.raw("(UUID())")); // Auto-generate UUID
+    table.uuid("id").primary().defaultTo(knex.raw("(UUID())")); // Unique row ID
+    table.uuid("user_id").notNullable();
+    table.uuid("community_id").notNullable();
+
     table
-      .uuid("user_id")
-      .notNullable()
+      .foreign("user_id")
       .references("id")
       .inTable("users")
       .onDelete("CASCADE");
     table
-      .uuid("community_id")
-      .notNullable()
+      .foreign("community_id")
       .references("id")
       .inTable("communities")
       .onDelete("CASCADE");
-    table.timestamps(true, true);
 
-    // Ensure unique combinations of user and community
-    table.unique(["user_id", "community_id"]);
+    table.timestamp("joined_at").defaultTo(knex.fn.now()); // Timestamp when user joined the community
+
+    table.unique(["user_id", "community_id"]); // Prevent duplicate entries
   });
 }
 
