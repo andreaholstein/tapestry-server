@@ -2,13 +2,15 @@ import { Router } from "express";
 import initKnex from "knex";
 import knexConfig from "../../knexfile.js";
 import { v4 as uuidv4 } from "uuid";
-
+import authorize from "./authorize.js";
 const router = Router();
 const knex = initKnex(knexConfig);
 
 // Get all user-community relationships
-router.get("/", async (req, res) => {
+router.get("/", authorize, async (req, res) => {
   try {
+    const userId = req.user_id; // Get user_id from decoded token
+
     const userCommunities = await knex("user_communities")
       .select(
         "user_communities.user_id",
@@ -22,7 +24,14 @@ router.get("/", async (req, res) => {
         "user_communities.community_id",
         "=",
         "communities.id"
-      );
+      )
+      .where("user_communities.user_id", userId); // Filter by user ID
+
+    if (userCommunities.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "No communities found for this user" });
+    }
 
     res.status(200).json(userCommunities);
   } catch (error) {
