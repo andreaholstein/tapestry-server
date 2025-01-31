@@ -18,7 +18,7 @@ const authorize = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     console.log("Decoded Token:", decoded);
-    req.token = decoded;
+    req.user_id = decoded.id; // Assign user_id from the decoded token to req.user_id
 
     next();
   } catch (error) {

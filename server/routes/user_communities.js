@@ -2,7 +2,7 @@ import { Router } from "express";
 import initKnex from "knex";
 import knexConfig from "../../knexfile.js";
 import { v4 as uuidv4 } from "uuid";
-import authorize from "./authorize.js";
+import authorize from "../middleware/auth.js";
 const router = Router();
 const knex = initKnex(knexConfig);
 
@@ -10,7 +10,9 @@ const knex = initKnex(knexConfig);
 router.get("/", authorize, async (req, res) => {
   try {
     const userId = req.user_id; // Get user_id from decoded token
+    console.log("Authenticated user ID:", userId); // Log userId to verify
 
+    // Fetch communities for the authenticated user
     const userCommunities = await knex("user_communities")
       .select(
         "user_communities.user_id",
