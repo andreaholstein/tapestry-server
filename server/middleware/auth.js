@@ -1,15 +1,12 @@
 import jwt from "jsonwebtoken";
-
 const authorize = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("Authorization header missing or malformed");
     return res
       .status(401)
       .json({ error: "Authorization header missing or malformed" });
   }
-
   const token = authHeader.split(" ")[1];
   console.log("Token:", token);
 
@@ -24,5 +21,4 @@ const authorize = (req, res, next) => {
     return res.status(403).json({ error: "Token verification failed" });
   }
 };
-
 export default authorize;

@@ -44,7 +44,7 @@ const upload = multer({
   },
 });
 
-// GET route to fetch posts
+// ✅ GET route: Fetch posts to fetch posts
 router.get("/", async (req, res) => {
   try {
     const { community_id, user_id } = req.query;
@@ -66,7 +66,7 @@ router.get("/", async (req, res) => {
     }
 
     if (user_id) {
-      postsQuery = postsQuery.where("posts.user_id", user_id);
+      postsQuery = postsQuery.where("posts.posts.user_id", user_id);
     }
 
     const posts = await postsQuery;
@@ -80,7 +80,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-// POST route to create a new post
+// ✅ POST route to create a new post
 router.post("/", upload.single("post_media"), async (req, res) => {
   try {
     const { post_text, user_id, community_id } = req.body;
@@ -92,7 +92,6 @@ router.post("/", upload.single("post_media"), async (req, res) => {
       file: req.file,
     });
 
-    // Validate required fields
     if (!post_text || !user_id) {
       return res.status(400).json({
         error: "Missing required fields",
@@ -124,7 +123,6 @@ router.post("/", upload.single("post_media"), async (req, res) => {
       }
     }
 
-    // Create new post object with UUID
     const newPost = {
       id: uuidv4(),
       post_text,
@@ -140,7 +138,7 @@ router.post("/", upload.single("post_media"), async (req, res) => {
     // Insert the new post
     await knex("posts").insert(newPost);
 
-    // Fetch the created post with user email
+    // Fetch the created post  with user email
     const createdPost = await knex("posts")
       .select(
         "posts.id",
@@ -148,10 +146,14 @@ router.post("/", upload.single("post_media"), async (req, res) => {
         "posts.post_media",
         "posts.created_at",
         "posts.community_id",
-        "users.email as user_email"
+        "users.email as user_email",
+        "users.first_name",
+        "users.last_name",
+        "users.username",
+        "users.profile_picture"
       )
       .leftJoin("users", "posts.user_id", "users.id")
-      .where("posts.id", newPost.id)
+      .where("posts.id", newPost.id) // Fix table name to be 'posts.id' not 'posts.posts.id'
       .first();
 
     res.status(201).json(createdPost);
