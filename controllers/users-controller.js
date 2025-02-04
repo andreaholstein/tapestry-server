@@ -16,7 +16,24 @@ const getUser = async (req, res) => {
     res.status(500).json({ message: "Can't fetch user profile" });
   }
 };
+export const getUserByEmail = async (req, res) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
 
+    const user = await knex("users").where("email", email).first();
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    console.error("[ERROR] GET user by email:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
 const registerUser = async (req, res) => {
   if (
     !req.body.first_name ||
@@ -82,4 +99,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export { getUser, registerUser, loginUser }
+export { getUser, registerUser, loginUser };
