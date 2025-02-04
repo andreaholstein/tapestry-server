@@ -9,7 +9,7 @@ const knex = initKnex(knexConfig);
 // Get all user-community relationships
 router.get("/", authorize, async (req, res) => {
   try {
-    const userId = req.user.id; // Get user_id from decoded token
+    const userId = req.user_id; // Get user_id from decoded token [andrea updated to req.user_id]
     console.log("Authenticated user ID:", userId); // Log userId to verify
 
     // Fetch communities for the authenticated user
