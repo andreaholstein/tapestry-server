@@ -153,7 +153,7 @@ router.post("/", upload.single("post_media"), async (req, res) => {
         "users.profile_picture"
       )
       .leftJoin("users", "posts.user_id", "users.id")
-      .where("posts.id", newPost.id) // Fix table name to be 'posts.id' not 'posts.posts.id'
+      .where("posts.id", newPost.id)
       .first();
 
     res.status(201).json(createdPost);
