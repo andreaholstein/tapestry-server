@@ -47,7 +47,7 @@ app.get("/", (req, res) => {
 
 // ✅ Add missing posts route
 app.use("/posts", postsRoutes);
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/users", userRoutes);
 app.use("/user-communities", userCommunitiesRoutes);
 app.use("/communities", communityRoutes);
