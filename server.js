@@ -32,8 +32,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
 // Get current file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.resolve();
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Middleware for logging requests
 app.use((req, res, next) => {
