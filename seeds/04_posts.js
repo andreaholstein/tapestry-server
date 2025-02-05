@@ -25,14 +25,14 @@ export async function seed(knex) {
       user_id: userIds[0], // Make sure this ID exists
       community_id: concertCommunityId,
       post_text: "Excited for the upcoming Coldplay concert! Who's going?",
-      post_media: "./assets/images/CONCERTPHOTO_ (1).jpg",
+      post_media: "images/CONCERTPHOTO_1.jpg",
     },
     {
       id: uuidv4(),
       user_id: userIds[2], // Make sure this ID exists
       community_id: concertCommunityId,
       post_text: "Just saw the Rolling Stones live. What a performance!",
-      post_media: "./assets/images/CONCERTPHOTO_ (2).jpg",
+      post_media: "images/CONCERTPHOTO_2.jpg",
     },
 
     // Posts for Coffeeshops Community
@@ -42,7 +42,7 @@ export async function seed(knex) {
       community_id: coffeeshopCommunityId,
       post_text:
         "Found a great new coffee shop downtown. The best flat white ever!",
-      post_media: "./assets/images/COFFESHOP_ (2).jpg",
+      post_media: "images/COFFEESHOP_2.jpg",
     },
     {
       id: uuidv4(),
@@ -50,7 +50,7 @@ export async function seed(knex) {
       community_id: coffeeshopCommunityId,
       post_text:
         "Coffee lovers unite! What's your go-to drink at your local café?",
-      post_media: "./assets/images/COFFESHOP_ (1).jpg",
+      post_media: "images/COFFEESHOP_1.jpg",
     },
 
     // Posts for Life Updates Community
@@ -59,7 +59,7 @@ export async function seed(knex) {
       user_id: userIds[0], // Make sure this ID exists
       community_id: lifeUpdateCommunityId,
       post_text: "Just got engaged! Exciting times ahead.",
-      post_media: "./assets/images/LIFEUPDATESPHOTO_(3).jpg",
+      post_media: "images/LIFEUPDATESPHOTO_3.jpg",
     },
     {
       id: uuidv4(),
@@ -67,7 +67,7 @@ export async function seed(knex) {
       community_id: lifeUpdateCommunityId,
       post_text:
         "Moving to a new city this week! Can’t wait for the adventure.",
-      post_media: "./assets/images/LIFEUPDATESPHOTO_(2).jpg",
+      post_media: "images/LIFEUPDATESPHOTO_2.jpg",
     },
   ]);
 }
