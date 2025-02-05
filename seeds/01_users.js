@@ -13,7 +13,7 @@ export async function seed(knex) {
   const hashedPasswords = await Promise.all([
     bcrypt.hash("password123", SALT_ROUNDS),
     bcrypt.hash("securePass456", SALT_ROUNDS),
-    bcrypt.hash("mySuperSecret789", SALT_ROUNDS)
+    bcrypt.hash("mySuperSecret789", SALT_ROUNDS),
   ]);
 
   await knex("users").insert([
@@ -24,8 +24,7 @@ export async function seed(knex) {
       username: "john_doe",
       email: "john@example.com",
       password: hashedPasswords[0],
-      profile_picture:
-        "http://localhost:8080/assets/images/PROFILEPHOTO_(1).jpg"
+      profile_picture: "images/PROFILEPHOTO_1.jpg",
     },
     {
       id: uuidv4(),
@@ -34,8 +33,7 @@ export async function seed(knex) {
       username: "jane_smith",
       email: "jane@example.com",
       password: hashedPasswords[1],
-      profile_picture:
-        "http://localhost:8080/assets/images/TRAVELPHOTO_ (9).jpg"
+      profile_picture: "images/TRAVELPHOTO_9.jpg",
     },
     {
       id: uuidv4(),
@@ -44,8 +42,7 @@ export async function seed(knex) {
       username: "alice_brown",
       email: "alice@example.com",
       password: hashedPasswords[2],
-      profile_picture:
-        "http://localhost:8080/assets/images/PROFILEPHOTO_(6).jpg"
-    }
+      profile_picture: "images/PROFILEPHOTO_6.jpg",
+    },
   ]);
 }
