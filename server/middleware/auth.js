@@ -12,7 +12,7 @@ const authorize = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.token = decoded;
+    req.user_id = decoded.id;
     next();
   } catch (error) {
     return res.status(403).json({ error: "Token verification failed" });
