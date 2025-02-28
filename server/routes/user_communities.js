@@ -16,7 +16,12 @@ router.get("/", authorize, async (req, res) => {
     const userCommunities = await knex("user_communities")
       .where("user_communities.user_id", userId)
       .join("communities", "user_communities.community_id", "communities.id")
-      .select("communities.id", "communities.title");
+      .select(
+        "communities.id",
+        "communities.title",
+        "communities.photo",
+        "communities.alt_text"
+      );
 
     if (userCommunities.length === 0) {
       return res
