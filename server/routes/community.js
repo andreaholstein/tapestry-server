@@ -31,7 +31,13 @@ router.post("/", authorize, async (req, res) => {
   try {
     const { title, topic, photo, alt_text } = req.body;
 
-    // Use the user_id from the decoded token (stored in req.user)
+    // Defensive check: Ensure req.user exists
+    if (!req.user || !req.user.id) {
+      console.error(
+        "[ERROR] POST create community: No user info found in req.user"
+      );
+      return res.status(401).json({ error: "User not authenticated" });
+    }
     const user_id = req.user.id;
 
     if (!title || !topic || !photo || !alt_text) {
@@ -55,9 +61,17 @@ router.post("/", authorize, async (req, res) => {
       .where("id", newCommunity.id)
       .first();
 
+    // Defensive check: Ensure the community was created successfully
+    if (!community) {
+      console.error(
+        "[ERROR] POST create community: Community not found after insertion"
+      );
+      return res.status(500).json({ error: "Community creation failed" });
+    }
+
     // Create a user-community relationship
     const userCommunity = {
-      user_id: user_id, // Use user_id from the decoded token
+      user_id: user_id,
       community_id: community.id,
     };
 
