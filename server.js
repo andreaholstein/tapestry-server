@@ -1,9 +1,15 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import http from "http";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import userRoutes from "./server/routes/userRoutes.js";
+import userCommunitiesRoutes from "./server/routes/user_communities.js";
+import communityRoutes from "./server/routes/community.js";
+import postsRoutes from "./server/routes/posts.js"; // ✅ Import posts.js
 import path from "path";
 const { Server } = require("socket.io");
 
@@ -16,7 +22,7 @@ const server = http.createServer(app);
 // Initialize Socket.io and attach it to the HTTP server
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow connections from any origin (for development; pdate for production)
+    origin: "*", // Allow connections from any origin (for development; update for production)
   },
 });
 
@@ -26,8 +32,8 @@ app.use(express.json());
 const PORT = process.env.PORT || 8080;
 
 // Get current file's directory
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.resolve();
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // Middleware for logging requests
 app.use((req, res, next) => {
@@ -39,21 +45,12 @@ app.get("/", (req, res) => {
   res.json({ msg: "GET request working" });
 });
 
-// Import and mount posts routes
-try {
-  const postsRoutes = await import("./server/routes/posts.js");
-  app.use("/posts", postsRoutes.default);
-} catch (error) {
-  console.error("[ERROR] Failed to import posts routes:", error);
-}
-
-// Import and mount community routes
-try {
-  const communityRoutes = await import("./server/routes/community.js");
-  app.use("/communities", communityRoutes.default);
-} catch (error) {
-  console.error("[ERROR] Failed to import community routes:", error);
-}
+// ✅ Add missing posts route
+app.use("/posts", postsRoutes);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/users", userRoutes);
+app.use("/user-communities", userCommunitiesRoutes);
+app.use("/communities", communityRoutes);
 
 // 404 handler
 app.use((req, res) => {

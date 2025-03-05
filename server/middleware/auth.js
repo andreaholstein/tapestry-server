@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
 
-// Middleware to authorize users based on JWT
 const authorize = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     console.log("Authorization header missing or malformed");
     return res
@@ -16,9 +14,11 @@ const authorize = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     console.log("Decoded Token:", decoded);
-    req.token = decoded;
+
+    // Assign the decoded token to req.user so that req.user.id is accessible
+    req.user_id = decoded.id;
+    req.user = decoded;
 
     next();
   } catch (error) {
