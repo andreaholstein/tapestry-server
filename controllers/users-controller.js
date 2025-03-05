@@ -95,7 +95,7 @@ const loginUser = async (req, res) => {
 
     res.json({ authToken: token });
   } catch (error) {
-    res.status(404).json({ message: "User not found" });
+    res.status(404).json({ message: `User not found${error}` });
   }
 };
 

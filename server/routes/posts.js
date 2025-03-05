@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import authorize from "../middleware/auth.js";
 
 const router = Router();
 const knex = initKnex(knexConfig);
@@ -81,31 +82,30 @@ router.get("/", async (req, res) => {
 });
 
 // ✅ POST route to create a new post
-router.post("/", upload.single("post_media"), async (req, res) => {
+router.post("/", authorize, upload.single("post_media"), async (req, res) => {
   try {
-    const { post_text, user_id, community_id } = req.body;
+    const { post_text, community_id } = req.body;
 
     console.log("Received POST data:", {
       post_text,
-      user_id,
       community_id,
       file: req.file,
     });
 
-    if (!post_text || !user_id) {
+    if (!post_text) {
       return res.status(400).json({
         error: "Missing required fields",
-        required: ["post_text", "user_id"],
+        required: ["post_text"],
       });
     }
 
     // Find the user's actual ID based on the email
-    const user = await knex("users").where("email", user_id).first();
+    const user = await knex("users").where("id", req.user.id).first();
 
     if (!user) {
       return res.status(404).json({
         error: "User not found",
-        details: `No user found with email: ${user_id}`,
+        details: `No user found with id: ${req.user.id}`,
       });
     }
 
