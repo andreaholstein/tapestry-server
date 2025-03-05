@@ -17,7 +17,9 @@ const authorize = (req, res, next) => {
     console.log("Decoded Token:", decoded);
 
     // Assign the decoded token to req.user so that req.user.id is accessible
+    req.user_id = decoded.id;
     req.user = decoded;
+
     next();
   } catch (error) {
     console.error("Token verification failed:", error.message);
