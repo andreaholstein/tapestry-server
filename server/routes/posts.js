@@ -86,12 +86,6 @@ router.post("/", authorize, upload.single("post_media"), async (req, res) => {
   try {
     const { post_text, community_id } = req.body;
 
-    console.log("Received POST data:", {
-      post_text,
-      community_id,
-      file: req.file,
-    });
-
     if (!post_text) {
       return res.status(400).json({
         error: "Missing required fields",

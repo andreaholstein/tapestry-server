@@ -31,6 +31,4 @@ export async function seed(knex) {
   await knex("user_communities").insert(
     userCommunities.map((entry) => ({ id: uuidv4(), ...entry }))
   );
-
-  console.log("✅ User-Community relationships seeded successfully!");
 }
