@@ -59,10 +59,11 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
     });
 
-    const newUser = await knex("users").where({ id: newUserIds[0] }).first();
+    const newUser = await knex("users").where({ email: req.body.email }).first();
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ msg: `Couldn't create new user: ${error.message}` });
+    console.log(error)
   }
 };
 
