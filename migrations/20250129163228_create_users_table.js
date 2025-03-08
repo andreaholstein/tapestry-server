@@ -1,12 +1,12 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
+// /**
+//  * @param { import("knex").Knex } knex
+//  * @returns { Promise<void> }
+//  */
 import { v4 as uuidv4 } from 'uuid';
 
-export function up(knex) {
-  return knex.schema.createTable("users", function (table) {
-    table.uuid('id').primary().defaultTo(uuidv4()); // Unique user ID
+export async function up(knex) {
+  await knex.schema.createTable("users", function (table) {
+    table.uuid('id').primary().defaultTo(knex.raw("(UUID())")); // Unique user ID
     table.string('first_name', 50).notNullable(); // First name
     table.string('last_name', 50).notNullable(); // Last name
     table.string("username", 50).notNullable().unique(); // Username (unique)
